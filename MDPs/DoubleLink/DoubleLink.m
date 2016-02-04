@@ -133,15 +133,23 @@ classdef DoubleLink < MDP
             
             line(sum(obj.lengths)*[-1.1 1.1], [0 0], 'LineStyle', '--');
             axis(sum(obj.lengths)*[-1.1 1.1 -1.1 1.1]);
-
+            
+            % Agent starting position
+            initstate = obj.initstate(1);
+            X = obj.getJointsInTaskSpace(initstate);
+            xy1 = X(1:2,:);
+            xy2 = X(5:6,:);
+            
             % Agent handle
             lw = 4.0;
+            r = 0.1;
             colors = {[0.1 0.1 0.4], [0.4 0.4 0.8]};
-            obj.handleAgent{1} = line([0 0], [0, 0], 'linewidth', lw, 'color', colors{1});
-            obj.handleAgent{2} = line([0 0], [0, 0], 'linewidth', lw, 'color', colors{2});
-            obj.handleAgent{3} = rectangle('Position',[0,0,0,0],'Curvature',[1,1],'FaceColor',colors{1});
-            obj.handleAgent{4} = rectangle('Position',[0,0,0,0],'Curvature',[1,1],'FaceColor',colors{2});
-
+            obj.handleAgent{1} = line([0 xy1(1)], [0, xy1(2)], 'linewidth', lw, 'color', colors{1});
+            obj.handleAgent{2} = line([xy1(1) xy2(1)], [xy1(2) xy2(2)], 'linewidth', lw, 'color', colors{2});
+            %obj.handleAgent{3} = rectangle('Position',[0,0,2*r,2*r],'Curvature',[1,1],'FaceColor',colors{1});
+            %obj.handleAgent{4} = rectangle('Position',[0,0,2*r,2*r],'Curvature',[1,1],'FaceColor',colors{2});
+            obj.handleAgent{3} = rectangle('Position',[xy1(1)-r,xy1(2)-r,2*r,2*r],'Curvature',[1,1],'FaceColor',colors{1});
+            obj.handleAgent{4} = rectangle('Position',[xy2(1)-r,xy2(2)-r,2*r,2*r],'Curvature',[1,1],'FaceColor',colors{2});
             % 'Ghost' desired state
             r = 0.1;
             goalstate = [obj.q_des(1), obj.qd_des(1), obj.q_des(2), obj.qd_des(2)]';
@@ -149,7 +157,7 @@ classdef DoubleLink < MDP
             xy1 = X(1:2,:);
             xy2 = X(5:6,:);
 
-            % 'Ghost' desired state
+            % Ghost' desired state
             h = line([0 xy1(1)], [0, xy1(2)], 'linewidth', lw, 'color', 'r');
             h.Color(4) = 0.3;
             h = line([xy1(1) xy2(1)], [xy1(2) xy2(2)], 'linewidth', lw, 'color', 'r');
@@ -163,19 +171,37 @@ classdef DoubleLink < MDP
         end
         
         function updateplot(obj, state)
-            r = 0.1;
+            lw = 4.0;
+            r = 0.1; 
             X = obj.getJointsInTaskSpace(state);
             xy1 = X(1:2,:);
             xy2 = X(5:6,:);
+                 
+            colors = {[0.1 0.1 0.4], [0.4 0.4 0.8]};
+            h1 = line([0 xy1(1)], [0, xy1(2)], 'linewidth', lw, 'color', colors{1});
+            h2 = line([xy1(1) xy2(1)], [xy1(2) xy2(2)], 'linewidth', lw, 'color', colors{2});
+            h3 = rectangle('Position',[xy1(1)-r,xy1(2)-r,2*r,2*r],'Curvature',[1,1],'FaceColor',colors{1});
+            h4 = rectangle('Position',[xy2(1)-r,xy2(2)-r,2*r,2*r],'Curvature',[1,1],'FaceColor',colors{2});
             
-            obj.handleAgent{1}.XData = [0 xy1(1)];
-            obj.handleAgent{1}.YData = [0 xy1(2)];
-            obj.handleAgent{2}.XData = [xy1(1) xy2(1)];
-            obj.handleAgent{2}.YData = [xy1(2) xy2(2)];
-            obj.handleAgent{3}.Position = [xy1(1)-r,xy1(2)-r,2*r,2*r];
-            obj.handleAgent{4}.Position = [xy2(1)-r,xy2(2)-r,2*r,2*r];
+            delete(obj.handleAgent{1});
+            delete(obj.handleAgent{2});
+            delete(obj.handleAgent{3});
+            delete(obj.handleAgent{4});
+          
+            obj.handleAgent{1} = h1;
+            obj.handleAgent{2} = h2;
+            obj.handleAgent{3} = h3;
+            obj.handleAgent{4} = h4;
+            
+            %obj.handleAgent{1}.XData = [0 xy1(1)];
+            %obj.handleAgent{1}.YData = [0 xy1(2)];
+            %obj.handleAgent{2}.XData = [xy1(1) xy2(1)];
+            %obj.handleAgent{2}.YData = [xy1(2) xy2(2)];
+            %obj.handleAgent{3}.Position = [xy1(1)-r,xy1(2)-r,2*r,2*r];
+            %obj.handleAgent{4}.Position = [xy2(1)-r,xy2(2)-r,2*r,2*r];
 
-            drawnow limitrate
+            %drawnow limitrate
+            drawnow;
         end
         
     end

@@ -101,14 +101,24 @@ classdef CartPole < MDP
             x2 = sin(theta) * 2 * obj.length + x1;
             y2 = cos(theta) * 2 * obj.length + y1;
             
-            obj.handleAgent{1}.XData = [x1-0.2 x1+0.2];
-            obj.handleAgent{1}.YData = [y1 y1];
-
-            obj.handleAgent{2}.XData = x1;
-            obj.handleAgent{2}.YData = y1;
-
-            obj.handleAgent{3}.XData = [x1 x2];
-            obj.handleAgent{3}.YData = [y1 y2];
+            
+            h1 = plot([x1-0.2 x1+0.2],[y1 y1],'k','LineWidth',6); % Cart
+            h2 = plot(x1,y1,'ko','MarkerSize',12,'MarkerEdgeColor','k','MarkerFaceColor','k'); % Cart-Pole Link / Wheel
+            h3 = plot([x1 x2],[y1 y2],'k','LineWidth',4); % Pole
+             
+            
+            delete(obj.handleAgent{1});
+            delete(obj.handleAgent{2});
+            delete(obj.handleAgent{3});
+          
+            obj.handleAgent{1} = h1;
+            obj.handleAgent{2} = h2;
+            obj.handleAgent{3} = h3;
+            
+            drawnow;
+            
+            
+            
         end
         
     end

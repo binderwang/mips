@@ -99,7 +99,9 @@ ds.a = permute(ds.a, [1 3 2]);
 ds.nexts = permute(ds.nexts, [1 3 2]);
 ds.gammar = permute(ds.gammar, [1 3 2]);
 ds.r = permute(ds.r, [1 3 2]);
-ds.Q = cumsum(ds.gammar,2,'reverse'); % Because allocated (but not run) steps have value 0
+%% ds.Q = cumsum(ds.gammar,2,'reverse'); % Because allocated (but not run) steps have value 0
+ds.Q = cumsum(ds.gammar,2);
+%%
 
 % Convert dataset to struct to allow storage of episodes with different length
 data = struct( ...

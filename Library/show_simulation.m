@@ -15,5 +15,5 @@ function [J, ds] = show_simulation(mdp, policy, pausetime, makedet)
 if makedet, policy = policy.makeDeterministic; end
 
 mdp.closeplot
-[ds, J] = collect_samples(mdp, 1, 10000, policy);
+[ds, J] = collect_samples(mdp, 1, 100000, policy);
 mdp.plotepisode(ds, pausetime)

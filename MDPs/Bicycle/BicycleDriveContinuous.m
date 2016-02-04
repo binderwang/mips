@@ -297,7 +297,7 @@ classdef BicycleDriveContinuous < MDP
             axis([xf-2 xf+2 yf-2 yf+2])
 %             view(rad2deg(psi),30) % View from the back of the bicyle
 
-            drawnow limitrate
+            drawnow 
         end
         
     end
